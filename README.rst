@@ -78,16 +78,16 @@ The following metadata is saved from Evernote to the header of the output
 This is how a note will look like in the application in preview mode. 
 are not renamed during the conversion.
 
-![](/screenshots/1.png)
+![](screenshots/1.png)
 
 As 1Writer makes use of hashtags you can search and browse notes using this information. 
 Make sure that you have turned this feature on in 1Writer settings.
 
-![](/screenshots/2.png)
+![](screenshots/2.png)
 
 1Writer also supports autocompletion of hashtags.
 
-![](/screenshots/3.png)
+![](screenshots/3.png)
 
 Notes
 -----
