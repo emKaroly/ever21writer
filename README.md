@@ -14,13 +14,6 @@ The html that is provided by Evernote is processed by the [html2text](http://pyp
 library. This transforms the html into [Markdown](http://daringfireball.net/projects/markdown/). The 1Writer application web UI
 supports previewing notes in Markdown, so this works out nicely.
 
-## Installation
-
-You can easily install this package using ``easy_install`` or ``pip`` as
-follows (preferably in a virtualenv):
-
-    $ pip install -U ever21writer
-
 ## Development Installation
 
 Clone this repository with ``git``:
@@ -40,8 +33,7 @@ Install live preserving local changes to the code:
 Once it is installed, you will have a new executable available to you.
 Before you can run the conversion, you will need to export your notes.
 This can be done from the desktop client. You can select the notes you
-want to export, then ``Export Notes to Archive...``, and select the
-``enex`` format.
+want to export, then ``Export Notes to Archive...``, and select the ``enex`` format.
 
 Once you have that, you can run the script on the file setting the ``--output``
 to a directory and using ``1writer`` as the parameter to ``--format``:
@@ -104,7 +96,7 @@ The help given by running ``ever21writer -h``:
 ## Notes
 
   - For using Evernote tags as hashtags, make sure you have your Evernote tags are named 
-    the way they will be valid as hashtags. The rules are simple: no spaces, no special chars, 
+    the way they will be valid as hashtags, because the script makes no conversion of your tag names. The rules are simple: no spaces, no special chars, 
     don't start with or use only numbers. The script adds the preceding ``#`` to your tags.
     See [this](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/) for more information
   - You should turn on the support for hashtags in 1Writer app for using them.
@@ -117,4 +109,3 @@ The help given by running ``ever21writer -h``:
   - check for file existence before writing any new files
   - download linked images 
   - alphabetical sort of hashtags
-
