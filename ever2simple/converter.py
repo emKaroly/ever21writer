@@ -46,21 +46,28 @@ class EverConverter(object):
             created_string = parse('19700101T000017Z')
             if note.xpath('created'):
                 created_string = parse(note.xpath('created')[0].text)
+                created_string_raw = note.xpath('created')[0].text
             updated_string = created_string
             if note.xpath('updated'):
                 updated_string = parse(note.xpath('updated')[0].text)
             note_dict['createdate'] = created_string.strftime(self.date_fmt)
+            note_dict['created_string_raw'] = created_string_raw
             note_dict['modifydate'] = updated_string.strftime(self.date_fmt)
             tags = [tag.text for tag in note.xpath('tag')]
             if self.fmt == 'csv':
                 tags = " ".join(tags)
             note_dict['tags'] = tags
+            raw_note_attributes = note.xpath('note-attributes')
+            source_url = ''
+            for note_attribute in raw_note_attributes:
+                if note_attribute.xpath('source-url'):
+                    source_url = note_attribute.xpath('source-url')[0].text
             note_dict['content'] = ''
             content = note.xpath('content')
             if content:
                 raw_text = content[0].text
                 # TODO: Option to go to just plain text, no markdown
-                converted_text = self._convert_html_markdown(title, raw_text)
+                converted_text = self._convert_html_markdown(title, raw_text, tags, source_url, note_dict['created_string_raw'] )
                 if self.fmt == 'csv':
                     # XXX: DictWriter can't handle unicode. Just
                     #      ignoring the problem for now.
@@ -84,10 +91,28 @@ class EverConverter(object):
             self._convert_json(notes)
         if self.fmt == 'dir':
             self._convert_dir(notes)
+        if self.fmt == '1writer':
+            self._convert_dir(notes)
 
-    def _convert_html_markdown(self, title, text):
+    def _convert_html_markdown(self, title, text, tags, source_url, created_string_raw ):
         html2plain = HTML2Text(None, "")
         html2plain.feed("<h1>%s</h1>" % title)
+        if self.fmt == '1writer':
+            header_created = 0 
+            if tags:
+                header_created += 1
+                html2plain.feed("<p>Tags: ")
+                for i in (tags):
+                    html2plain.feed("#%s " % i)
+                html2plain.feed("</p>")
+            if source_url:
+                html2plain.feed("<p><a href=\"%s\">Source</a></p>" % source_url )
+                header_created += 1
+            if created_string_raw:
+                header_created += 1
+                html2plain.feed("<p>Created: %s</p>" % created_string_raw)
+            if header_created:
+                html2plain.feed("<hr />")
         html2plain.feed(text)
         return html2plain.close()
 
@@ -121,6 +146,6 @@ class EverConverter(object):
             elif not os.path.exists(self.simple_filename):
                 os.makedirs(self.simple_filename)
             for i, note in enumerate(notes):
-                output_file_path = os.path.join(self.simple_filename, str(i) + '.txt')
+                output_file_path = os.path.join(self.simple_filename, str(i).zfill(4) + '.txt')
                 with open(output_file_path, 'w') as output_file:
                     output_file.write(note['content'].encode(encoding='utf-8'))
