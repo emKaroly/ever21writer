@@ -95,21 +95,21 @@ Command Line Help
 
 The help given by running ``ever21writer -h``:
 
-  usage: ever21writer [-h] [-o OUTPUT] [-f {json,csv,dir,1writer}] enex-file
+    usage: ever21writer [-h] [-o OUTPUT] [-f {json,csv,dir,1writer}] enex-file
 
-  Convert Evernote.enex files to Markdown
+    Convert Evernote.enex files to Markdown
 
-  positional arguments:
-    enex-file             the path to the Evernote.enex file
+    positional arguments:
+      enex-file             the path to the Evernote.enex file
 
-  optional arguments:
-    -h, --help            show this help message and exit
-    -o OUTPUT, --output OUTPUT
-                          the path to the output file or directory, leave black
-                          to output to the terminal (stdout) (default: None)
-    -f {json,csv,dir,1writer}, --format {json,csv,dir,1writer}
-                          the output format, json, csv or a directory (default:
-                          1writer)
+    optional arguments:
+      -h, --help            show this help message and exit
+      -o OUTPUT, --output OUTPUT
+                            the path to the output file or directory, leave black
+                            to output to the terminal (stdout) (default: None)
+      -f {json,csv,dir,1writer}, --format {json,csv,dir,1writer}
+                            the output format, json, csv or a directory (default:
+                            1writer)
 
 
 Notes and Caveats
