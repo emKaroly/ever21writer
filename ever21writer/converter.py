@@ -148,7 +148,7 @@ class EverConverter(object):
                 os.makedirs(self.simple_filename)
             # TODO check existence of ALL files BEFORE writing any of them!
             for i, note in enumerate(notes):
-                output_file_path = os.path.join(self.simple_filename, note['created_string_raw'] + '.md')
+                output_file_path = os.path.join(self.simple_filename, str(i).zfill(4) + '_' + note['created_string_raw'] + '.md')
                 if os.path.exists(output_file_path):
                     print '"%s" file already exists, exiting' % output_file_path
                     sys.exit(1)
