@@ -114,6 +114,7 @@ The help given by running ``ever21writer -h``:
 ## Todo
 
   - turn back to README.rst
+  - check for file existence before writing any new files
   - download linked images 
   - alphabetical sort of hashtags
 
