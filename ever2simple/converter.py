@@ -146,7 +146,8 @@ class EverConverter(object):
             elif not os.path.exists(self.simple_filename):
                 os.makedirs(self.simple_filename)
             for i, note in enumerate(notes):
-                output_file_path = os.path.join(self.simple_filename, str(i).zfill(4) + '.md')
+                # TODO check for files already existing with this filename!
+                output_file_path = os.path.join(self.simple_filename, note['created_string_raw'] + '.md')
                 with open(output_file_path, 'w') as output_file:
                     output_file.write(note['content'].encode(encoding='utf-8'))
                      
