@@ -67,16 +67,16 @@ The following metadata is saved from Evernote to the header of the output
 
 This is how a note will look like in the application in preview mode. 
 
-![screenshot1](screenshots/1.png =250x)
+![screenshot1](screenshots/1.png)
 
 As 1Writer makes use of hashtags you can search and browse notes using this information. 
 Make sure that you have turned this feature on in 1Writer settings.
 
-![screenshot2](screenshots/2.png =250x)
+![screenshot2](screenshots/2.png)
 
 1Writer also supports autocompletion of hashtags.
 
-![screenshot3](screenshots/3.png =250x)
+![screenshot3](screenshots/3.png)
 
 Notes
 -----
