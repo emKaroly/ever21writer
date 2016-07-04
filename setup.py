@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 version = '2.0'
 
 setup(
-    name='ever2simple',
+    name='ever21writer',
     version=version,
     description=(
-        "Migrate from evernote to simplenote with markdown formatting"),
+        "Migrate from evernote to 1writer with markdown formatting"),
     long_description=(
         open("README.rst").read() +
         '\n\n' +
@@ -29,6 +29,6 @@ setup(
     ],
     entry_points="""
     [console_scripts]
-    ever2simple = ever2simple.core:main
+    ever21writer = ever21writer.core:main
     """,
     )

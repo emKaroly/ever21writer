@@ -1,6 +1,6 @@
 import os
 import sys
-from ever2simple.converter import EverConverter
+from ever21writer.converter import EverConverter
 import argparse
 
 
