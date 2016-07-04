@@ -1,23 +1,22 @@
 Introduction
 ============
 
-Evernote_ and Simplenote_ are two online based note taking apps. Evernote
+Evernote_ and 1Writer_ are two note taking apps. Evernote
 focuses more on giving the end user rich text and the ability to upload
-voice clips and images for OCR. Simplenote on the other hand, as seen by
-its name, is a much simpler approach. It just stores your plain text
-notes, and that is it.
+voice clips and images for OCR. 1Writer on the other hand is basically
+a markdown based plain text editor for iOS devices.
 
 This package installs a script to help you migrate from Evernote into
-Simplenote by exporting the notes as files. The script
-will take an Evernote ``enex`` export and turn it into a ``json``, ``csv`` or
-directory of ``*.txt`` files.
+markdown files, keeping some metadata information for convenient use
+with 1Writer.  The script will take an Evernote ``enex`` export and turn it into 
+a directory of ``md`` files.
 
 The html that is provided by Evernote is processed by the html2text_
-library. This transforms the html into Markdown_. The Simplenote web UI
+library. This transforms the html into Markdown_. The 1Writer application web UI
 supports previewing notes in Markdown, so this works out nicely.
 
 .. _Evernote: http://www.evernote.com
-.. _Simplenote: http://simplenoteapp.com
+.. _1Writer: http://1writerapp.com
 .. _html2text: http://pypi.python.org/pypi/html2text/
 .. _Markdown: http://daringfireball.net/projects/markdown/
 
@@ -27,7 +26,7 @@ Installation
 You can easily install this package using ``easy_install`` or ``pip`` as
 follows (preferably in a virtualenv)::
 
-    $ pip install -U ever2simple
+    $ pip install -U ever21writer
 
 Development Installation
 ------------------------
@@ -38,7 +37,7 @@ Clone this repository with ``git``::
 
 Enter the code directory::
 
-    $ cd ever2simple
+    $ cd ever21writer
 
 Install live preserving local changes to the code::
 
@@ -54,33 +53,53 @@ want to export, then ``Export Notes to Archive...``, and select the
 ``enex`` format.
 
 Once you have that, you can run the script on the file setting the ``--output``
-to a directory and using ``dir`` as the parameter to ``--format``::
+to a directory and using ``1writer`` as the parameter to ``--format``::
 
-    $ ever2simple my_evernote.enex --output simplenote_dir --format dir
+    $ ever2simple my_evernote.enex --output 1writer_dir --format 1writer
 
-That will output each note in a ``*.txt`` file named by a number to the
-``simplenote_dir`` directory (creating it if it doesn't exist).
+That will output each note in a ``*.md`` file named by creation date into the
+``1writer_dir`` directory (creating it if it doesn't exist).
 
-You can now request Simplenote's support to enable Dropbox synchronization
-to your account here: https://simplenote.com/contact-us/
-
-Once they enable Dropbox synchronization for you, go to
-https://app.simplenote.com/settings and configure it (in the last section).
-
-After that, copy your converted ``*.txt`` note files to your Simplenote
-directory inside your Dropbox and synchronize them from
-https://app.simplenote.com/settings.
+All you need is to put this directory into your Dropbox or iCloud accont for
+synchornization, and to add this directory in your 1Writer app.
 
 
-If you want to export to CSV you can pass ``csv`` to the ``--format``
-parameter::
+Metadata saved from Evernote
+----------------------------
 
-    $ ever2simple my_evernote.enex --output simplenote.csv --format csv
+The following metadata is saved from Evernote to the header of the output
+``*.md`` files: 
 
-If you want to export to JSON you can pass ``json`` to the ``--format``
-parameter (or just don't use that parameter as ``json`` is the default)::
+ - tags as a list of hashtags
+ - source URL of the note if any
+ - creation date of the note
 
-    $ ever2simple my_evernote.enex --output simplenote.json --format json
+
+This is how a note will look like in the application in preview mode. 
+are not renamed during the conversion.
+
+![](/screenshots/1.png)
+
+As 1Writer makes use of hashtags you can search and browse notes using this information. 
+Make sure that you have turned this feature on in 1Writer settings.
+
+![](/screenshots/2.png)
+
+1Writer also supports autocompletion of hashtags.
+
+![](/screenshots/3.png)
+
+Notes
+-----
+
+  - For using Evernote tags as hashtags, make sure you have your Evernote tags are named 
+    the way they will be valid as hashtags. The rules are simple: no spaces, no special chars, 
+    don't start with or use only numbers.  The script adds the preceding ``#``.
+    See [this](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/) for more information
+  - You should turn the support for hashtags in 1Writer app for using them.
+  - 1Writer looks for your whole note for hashtags when the feature is on so if your note body contains
+    hashtag-like words they will show in the app as well.
+
 
 Command Line Help
 -----------------
@@ -127,19 +146,3 @@ Notes and Caveats
   The oddest character is a unicode space, why on earth do we need
   unicode spaces in our notes?1?!
 
-Links
------
-
-PyPi
-  http://pypi.python.org/pypi/ever2simple
-Github
-  http://github.com/claytron/ever2simple
-Bug Reports
-  http://github.com/claytron/ever2simple/issues
-
-TODO
-----
-
-- Write some basic tests
-- Unicode for ``DictWriter``
-- Test on Python 3
