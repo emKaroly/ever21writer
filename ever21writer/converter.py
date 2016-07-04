@@ -149,6 +149,10 @@ class EverConverter(object):
             for i, note in enumerate(notes):
                 # TODO check for files already existing with this filename!
                 output_file_path = os.path.join(self.simple_filename, note['created_string_raw'] + '.md')
-                with open(output_file_path, 'w') as output_file:
-                    output_file.write(note['content'].encode(encoding='utf-8'))
+                if os.path.exists(output_file_path):
+                    print '"%s" file already exists, exiting' % output_file_path
+                    sys.exit(1)
+                else:
+                    with open(output_file_path, 'w') as output_file:
+                        output_file.write(note['content'].encode(encoding='utf-8'))
                      
