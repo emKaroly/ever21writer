@@ -1,7 +1,6 @@
-Introduction
-============
+# Introduction
 
-Evernote_ and 1Writer_ are two note taking apps. Evernote
+[Evernote](http://www.evernote.com) and [1Writer](http://1writerapp.com) are two note taking apps. Evernote
 focuses more on giving the end user rich text and the ability to upload
 voice clips and images for OCR. 1Writer on the other hand is basically
 a markdown based plain text editor for iOS devices.
@@ -11,40 +10,32 @@ markdown files, keeping some metadata information for convenient use
 with 1Writer.  The script will take an Evernote ``enex`` export and turn it into 
 a directory of ``md`` files.
 
-The html that is provided by Evernote is processed by the html2text_
-library. This transforms the html into Markdown_. The 1Writer application web UI
+The html that is provided by Evernote is processed by the [html2text](http://pypi.python.org/pypi/html2text/)
+library. This transforms the html into [Markdown](http://daringfireball.net/projects/markdown/). The 1Writer application web UI
 supports previewing notes in Markdown, so this works out nicely.
 
-.. _Evernote: http://www.evernote.com
-.. _1Writer: http://1writerapp.com
-.. _html2text: http://pypi.python.org/pypi/html2text/
-.. _Markdown: http://daringfireball.net/projects/markdown/
-
-Installation
-------------
+## Installation
 
 You can easily install this package using ``easy_install`` or ``pip`` as
-follows (preferably in a virtualenv)::
+follows (preferably in a virtualenv):
 
     $ pip install -U ever21writer
 
-Development Installation
-------------------------
+## Development Installation
 
-Clone this repository with ``git``::
+Clone this repository with ``git``:
 
     $ git clone https://github...
 
-Enter the code directory::
+Enter the code directory:
 
     $ cd ever21writer
 
-Install live preserving local changes to the code::
+Install live preserving local changes to the code:
 
     $ pip install -e .
 
-Usage
------
+## Usage
 
 Once it is installed, you will have a new executable available to you.
 Before you can run the conversion, you will need to export your notes.
@@ -53,7 +44,7 @@ want to export, then ``Export Notes to Archive...``, and select the
 ``enex`` format.
 
 Once you have that, you can run the script on the file setting the ``--output``
-to a directory and using ``1writer`` as the parameter to ``--format``::
+to a directory and using ``1writer`` as the parameter to ``--format``:
 
     $ ever2simple my_evernote.enex --output 1writer_dir --format 1writer
 
@@ -64,8 +55,7 @@ All you need is to put this directory into your Dropbox or iCloud accont for
 synchornization, and to add this directory in your 1Writer app.
 
 
-Metadata saved from Evernote
-----------------------------
+## Metadata saved from Evernote
 
 The following metadata is saved from Evernote to the header of the output
 ``*.md`` files: 
@@ -76,27 +66,26 @@ The following metadata is saved from Evernote to the header of the output
 
 
 This is how a note will look like in the application in preview mode. 
-are not renamed during the conversion.
 
-![](screenshots/1.png)
+![screenshot1](screenshots/1.png)
 
 As 1Writer makes use of hashtags you can search and browse notes using this information. 
 Make sure that you have turned this feature on in 1Writer settings.
 
-![](screenshots/2.png)
+![screenshot2](screenshots/2.png)
 
 1Writer also supports autocompletion of hashtags.
 
-![](screenshots/3.png)
+![screenshot3](screenshots/3.png)
 
 Notes
 -----
 
   - For using Evernote tags as hashtags, make sure you have your Evernote tags are named 
     the way they will be valid as hashtags. The rules are simple: no spaces, no special chars, 
-    don't start with or use only numbers.  The script adds the preceding ``#``.
+    don't start with or use only numbers. The script adds the preceding ``#`` to your tags.
     See [this](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/) for more information
-  - You should turn the support for hashtags in 1Writer app for using them.
+  - You should turn on the support for hashtags in 1Writer app for using them.
   - 1Writer looks for your whole note for hashtags when the feature is on so if your note body contains
     hashtag-like words they will show in the app as well.
 
@@ -104,7 +93,7 @@ Notes
 Command Line Help
 -----------------
 
-The help given by running ``ever2simple -h``::
+The help given by running ``ever2simple -h``:
 
 
     usage: ever2simple [-h] [-o OUTPUT] [-f {json,csv,dir}] enex-file
