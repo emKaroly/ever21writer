@@ -43,7 +43,8 @@ class EverConverter(object):
             title = note.xpath('title')[0].text
             # Use dateutil to figure out these dates
             # 20110610T182917Z
-            created_string = parse('19700101T000017Z')
+            created_string_raw = '19700101T000017Z'
+            created_string = parse(created_string_raw)
             if note.xpath('created'):
                 created_string = parse(note.xpath('created')[0].text)
                 created_string_raw = note.xpath('created')[0].text
