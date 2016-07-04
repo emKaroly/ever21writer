@@ -78,20 +78,8 @@ Make sure that you have turned this feature on in 1Writer settings.
 
 ![screenshot3](screenshots/3.png)
 
-Notes
------
 
-  - For using Evernote tags as hashtags, make sure you have your Evernote tags are named 
-    the way they will be valid as hashtags. The rules are simple: no spaces, no special chars, 
-    don't start with or use only numbers. The script adds the preceding ``#`` to your tags.
-    See [this](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/) for more information
-  - You should turn on the support for hashtags in 1Writer app for using them.
-  - 1Writer looks for your whole note for hashtags when the feature is on so if your note body contains
-    hashtag-like words they will show in the app as well.
-
-
-Command Line Help
------------------
+## Command Line Help
 
 The help given by running ``ever21writer -h``:
 
@@ -112,25 +100,20 @@ The help given by running ``ever21writer -h``:
                             1writer)
 
 
-Notes and Caveats
------------------
 
-- Simplenote no longer supports JSON and CSV imports, only text files via
-  Dropbox.
+## Notes
 
-- Exporting to a directory will not preserve tags in the notes.
+  - For using Evernote tags as hashtags, make sure you have your Evernote tags are named 
+    the way they will be valid as hashtags. The rules are simple: no spaces, no special chars, 
+    don't start with or use only numbers. The script adds the preceding ``#`` to your tags.
+    See [this](https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/) for more information
+  - You should turn on the support for hashtags in 1Writer app for using them.
+  - 1Writer looks for your whole note for hashtags when the feature is on so if your note body contains
+    hashtag-like words they will show in the app as well.
 
-- This does not handle any attachments since simplenote doesn't support
-  them. This script does not ignore the note that has attachments. This
-  may make for some strange notes being imported with little to no text.
+## Todo
 
-- Evernote's export looks like those horrific Microsoft Word html
-  exports. You may want to cleanse the ``content`` data a bit before
-  running the script. This is left as an exercise for the user.
-
-- The notes in Evernote randomly contain unicode characters that aren't
-  really harmful to you today, but may bite you in the rear later. This
-  script just passes the buck, no extra cleansing of the text is done.
-  The oddest character is a unicode space, why on earth do we need
-  unicode spaces in our notes?1?!
+  - turn back to README.rst
+  - download linked images 
+  - alphabetical sort of hashtags
 
