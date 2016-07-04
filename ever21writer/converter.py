@@ -7,6 +7,8 @@ from dateutil.parser import parse
 from html2text import HTML2Text
 from lxml import etree
 
+import pprint 
+
 
 class EverConverter(object):
     """Evernote conversion runner
@@ -37,10 +39,12 @@ class EverConverter(object):
 
     def prepare_notes(self, xml_tree):
         notes = []
+        notes_dict = {}
         raw_notes = xml_tree.xpath('//note')
         for note in raw_notes:
             note_dict = {}
             title = note.xpath('title')[0].text
+            note_dict['title'] = title
             # Use dateutil to figure out these dates
             # 20110610T182917Z
             created_string_raw = '19700101T000017Z'
@@ -75,6 +79,14 @@ class EverConverter(object):
                     converted_text = converted_text.encode('ascii', 'ignore')
                 note_dict['content'] = converted_text
             notes.append(note_dict)
+            #if notes_dict[created_string_raw]:
+            if created_string_raw in notes_dict:
+                old_title = notes_dict[created_string_raw]['title']
+                #pprint.pprint(notes_dict[created_string_raw])
+                print("the following notes are sharing the same creation date %s:\n%s\n%s\n" % (created_string_raw, old_title, title))
+                sys.exit(1)
+            else:
+                notes_dict[created_string_raw] = note_dict
         return notes
 
     def convert(self):
