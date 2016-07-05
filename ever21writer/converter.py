@@ -38,7 +38,6 @@ class EverConverter(object):
         return xml_tree
 
     def prepare_notes(self, xml_tree):
-        notes = []
         map_notes = {}
         raw_notes = xml_tree.xpath('//note')
         for note in raw_notes:
@@ -71,38 +70,13 @@ class EverConverter(object):
             content = note.xpath('content')
             if content:
                 raw_text = content[0].text
-                # TODO: Option to go to just plain text, no markdown
                 converted_text = self._convert_html_markdown(title, raw_text, tags, source_url, note_dict['created_string_raw'] )
                 if self.fmt == 'csv':
                     # XXX: DictWriter can't handle unicode. Just
                     #      ignoring the problem for now.
                     converted_text = converted_text.encode('ascii', 'ignore')
                 note_dict['content'] = converted_text
-            notes.append(note_dict)
-            #if map_notes[created_string_raw]:
             map_notes.setdefault(created_string_raw,[]).append(note_dict)
-            #if created_string_raw in map_notes:
-                #old_title = map_notes[created_string_raw]['title']
-                #pprint.pprint(map_notes[created_string_raw])
-                #print("the following notes are sharing the same creation date %s:\n%s\n%s\n" % (created_string_raw, old_title, title))
-                #map_notes[created_string_raw].append(note_dict)
-            #else:
-                ##map_notes[created_string_raw].append(note_dict)
-                #device_list[location] = []
-                #device_list[location].append(device)
-                #map_notes[created_string_raw] = []
-                #map_notes[created_string_raw].append(note_dict)
-                #map_notes.setdefault(created_string_raw,[]).append(map_notes)
-
-        #pprint.pprint(map_notes)
-
-
-        #for k,v in map_notes.iteritems():
-            #print("%s:\n" % k)
-            #for i in v:
-                #pprint.pprint(i['title'])
-
-        #sys.exit(1)
         return map_notes
 
     def convert(self):
