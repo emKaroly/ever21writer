@@ -103,7 +103,7 @@ class EverConverter(object):
                 #pprint.pprint(i['title'])
 
         #sys.exit(1)
-        return notes
+        return map_notes
 
     def convert(self):
         if not os.path.exists(self.enex_filename):
@@ -165,17 +165,18 @@ class EverConverter(object):
             with open(self.simple_filename, 'w') as output_file:
                 json.dump(notes, output_file)
 
-    def _convert_dir(self, notes):
-        if self.simple_filename is None:
-            sys.stdout.write(json.dumps(notes))
-        else:
-            if os.path.exists(self.simple_filename) and not os.path.isdir(self.simple_filename):
-                print '"%s" exists but is not a directory. %s' % self.simple_filename
-                sys.exit(1)
-            elif not os.path.exists(self.simple_filename):
-                os.makedirs(self.simple_filename)
-            # TODO check existence of ALL files BEFORE writing any of them!
-            for i, note in enumerate(notes):
+    def _convert_dir(self, map_notes):
+        if os.path.exists(self.simple_filename) and not os.path.isdir(self.simple_filename):
+            print '"%s" exists but is not a directory. %s' % self.simple_filename
+            sys.exit(1)
+        elif not os.path.exists(self.simple_filename):
+            os.makedirs(self.simple_filename)
+        k = map_notes.keys()
+        k.sort()
+        i = 0
+        for created_string_raw in k:
+            for note in map_notes[created_string_raw]:
+                i += 1
                 output_file_path = os.path.join(self.simple_filename, str(i).zfill(4) + '_' + note['created_string_raw'] + '.md')
                 if os.path.exists(output_file_path):
                     print '"%s" file already exists, exiting' % output_file_path
@@ -183,4 +184,4 @@ class EverConverter(object):
                 else:
                     with open(output_file_path, 'w') as output_file:
                         output_file.write(note['content'].encode(encoding='utf-8'))
-                     
+
