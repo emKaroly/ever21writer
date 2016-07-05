@@ -39,7 +39,7 @@ class EverConverter(object):
 
     def prepare_notes(self, xml_tree):
         notes = []
-        notes_dict = {}
+        map_notes = {}
         raw_notes = xml_tree.xpath('//note')
         for note in raw_notes:
             note_dict = {}
@@ -79,14 +79,30 @@ class EverConverter(object):
                     converted_text = converted_text.encode('ascii', 'ignore')
                 note_dict['content'] = converted_text
             notes.append(note_dict)
-            #if notes_dict[created_string_raw]:
-            if created_string_raw in notes_dict:
-                old_title = notes_dict[created_string_raw]['title']
-                #pprint.pprint(notes_dict[created_string_raw])
-                print("the following notes are sharing the same creation date %s:\n%s\n%s\n" % (created_string_raw, old_title, title))
-                sys.exit(1)
-            else:
-                notes_dict[created_string_raw] = note_dict
+            #if map_notes[created_string_raw]:
+            map_notes.setdefault(created_string_raw,[]).append(note_dict)
+            #if created_string_raw in map_notes:
+                #old_title = map_notes[created_string_raw]['title']
+                #pprint.pprint(map_notes[created_string_raw])
+                #print("the following notes are sharing the same creation date %s:\n%s\n%s\n" % (created_string_raw, old_title, title))
+                #map_notes[created_string_raw].append(note_dict)
+            #else:
+                ##map_notes[created_string_raw].append(note_dict)
+                #device_list[location] = []
+                #device_list[location].append(device)
+                #map_notes[created_string_raw] = []
+                #map_notes[created_string_raw].append(note_dict)
+                #map_notes.setdefault(created_string_raw,[]).append(map_notes)
+
+        #pprint.pprint(map_notes)
+
+
+        #for k,v in map_notes.iteritems():
+            #print("%s:\n" % k)
+            #for i in v:
+                #pprint.pprint(i['title'])
+
+        #sys.exit(1)
         return notes
 
     def convert(self):
