@@ -14,7 +14,8 @@ class EverConverter(object):
     fieldnames = ['createdate', 'modifydate', 'content', 'tags']
     date_fmt = '%h %d %Y %H:%M:%S'
 
-    def __init__(self, enex_filename, simple_filename=None, fmt='json'):
+    #def __init__(self, enex_filename, simple_filename=None, fmt='json'):
+    def __init__(self, enex_filename, simple_filename=None):
         self.enex_filename = os.path.expanduser(enex_filename)
         self.stdout = False
         if simple_filename is None:
@@ -22,7 +23,7 @@ class EverConverter(object):
             self.simple_filename = simple_filename
         else:
             self.simple_filename = os.path.expanduser(simple_filename)
-        self.fmt = fmt
+        #self.fmt = fmt
 
     def _load_xml(self, enex_file):
         try:
@@ -55,8 +56,8 @@ class EverConverter(object):
             note_dict['created_string_raw'] = created_string_raw
             note_dict['modifydate'] = updated_string.strftime(self.date_fmt)
             tags = [tag.text for tag in note.xpath('tag')]
-            if self.fmt == 'csv':
-                tags = " ".join(tags)
+            #if self.fmt == 'csv':
+                #tags = " ".join(tags)
             note_dict['tags'] = tags
             raw_note_attributes = note.xpath('note-attributes')
             source_url = ''
@@ -68,10 +69,10 @@ class EverConverter(object):
             if content:
                 raw_text = content[0].text
                 converted_text = self._convert_html_markdown(title, raw_text, tags, source_url, note_dict['created_string_raw'] )
-                if self.fmt == 'csv':
+                #if self.fmt == 'csv':
                     # XXX: DictWriter can't handle unicode. Just
                     #      ignoring the problem for now.
-                    converted_text = converted_text.encode('ascii', 'ignore')
+                    #converted_text = converted_text.encode('ascii', 'ignore')
                 note_dict['content'] = converted_text
             map_notes.setdefault(created_string_raw,[]).append(note_dict)
         return map_notes
@@ -85,34 +86,34 @@ class EverConverter(object):
         xml_tree = self._load_xml(enex_file)
         enex_file.close()
         notes = self.prepare_notes(xml_tree)
-        if self.fmt == 'csv':
-            self._convert_csv(notes)
-        if self.fmt == 'json':
-            self._convert_json(notes)
-        if self.fmt == 'dir':
-            self._convert_dir(notes)
-        if self.fmt == '1writer':
-            self._convert_dir(notes)
+        #if self.fmt == 'csv':
+            #self._convert_csv(notes)
+        #if self.fmt == 'json':
+            #self._convert_json(notes)
+        #if self.fmt == 'dir':
+            #self._convert_dir(notes)
+        #if self.fmt == '1writer':
+        self._convert_dir(notes)
 
     def _convert_html_markdown(self, title, text, tags, source_url, created_string_raw ):
         html2plain = HTML2Text(None, "")
         html2plain.feed("<h1>%s</h1>" % title)
-        if self.fmt == '1writer':
-            header_created = 0 
-            if tags:
-                header_created += 1
-                html2plain.feed("<p>Tags: ")
-                for i in (tags):
-                    html2plain.feed("#%s " % i)
-                html2plain.feed("</p>")
-            if source_url:
-                html2plain.feed("<p><a href=\"%s\">Source</a></p>" % source_url )
-                header_created += 1
-            if created_string_raw:
-                header_created += 1
-                html2plain.feed("<p>Created: %s</p>" % created_string_raw)
-            if header_created:
-                html2plain.feed("<hr />")
+        #if self.fmt == '1writer':
+        header_created = 0 
+        if tags:
+            header_created += 1
+            html2plain.feed("<p>Tags: ")
+            for i in (tags):
+                html2plain.feed("#%s " % i)
+            html2plain.feed("</p>")
+        if source_url:
+            html2plain.feed("<p><a href=\"%s\">Source</a></p>" % source_url )
+            header_created += 1
+        if created_string_raw:
+            header_created += 1
+            html2plain.feed("<p>Created: %s</p>" % created_string_raw)
+        if header_created:
+            html2plain.feed("<hr />")
         html2plain.feed(text)
         return html2plain.close()
 
