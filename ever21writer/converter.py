@@ -7,9 +7,6 @@ from dateutil.parser import parse
 from html2text import HTML2Text
 from lxml import etree
 
-import pprint 
-
-
 class EverConverter(object):
     """Evernote conversion runner
     """
