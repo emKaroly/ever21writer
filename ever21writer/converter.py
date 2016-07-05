@@ -7,6 +7,8 @@ from dateutil.parser import parse
 from html2text import HTML2Text
 from lxml import etree
 
+import pprint 
+
 
 class EverConverter(object):
     """Evernote conversion runner
@@ -36,11 +38,12 @@ class EverConverter(object):
         return xml_tree
 
     def prepare_notes(self, xml_tree):
-        notes = []
+        map_notes = {}
         raw_notes = xml_tree.xpath('//note')
         for note in raw_notes:
             note_dict = {}
             title = note.xpath('title')[0].text
+            note_dict['title'] = title
             # Use dateutil to figure out these dates
             # 20110610T182917Z
             created_string_raw = '19700101T000017Z'
@@ -67,15 +70,14 @@ class EverConverter(object):
             content = note.xpath('content')
             if content:
                 raw_text = content[0].text
-                # TODO: Option to go to just plain text, no markdown
                 converted_text = self._convert_html_markdown(title, raw_text, tags, source_url, note_dict['created_string_raw'] )
                 if self.fmt == 'csv':
                     # XXX: DictWriter can't handle unicode. Just
                     #      ignoring the problem for now.
                     converted_text = converted_text.encode('ascii', 'ignore')
                 note_dict['content'] = converted_text
-            notes.append(note_dict)
-        return notes
+            map_notes.setdefault(created_string_raw,[]).append(note_dict)
+        return map_notes
 
     def convert(self):
         if not os.path.exists(self.enex_filename):
@@ -137,17 +139,18 @@ class EverConverter(object):
             with open(self.simple_filename, 'w') as output_file:
                 json.dump(notes, output_file)
 
-    def _convert_dir(self, notes):
-        if self.simple_filename is None:
-            sys.stdout.write(json.dumps(notes))
-        else:
-            if os.path.exists(self.simple_filename) and not os.path.isdir(self.simple_filename):
-                print '"%s" exists but is not a directory. %s' % self.simple_filename
-                sys.exit(1)
-            elif not os.path.exists(self.simple_filename):
-                os.makedirs(self.simple_filename)
-            # TODO check existence of ALL files BEFORE writing any of them!
-            for i, note in enumerate(notes):
+    def _convert_dir(self, map_notes):
+        if os.path.exists(self.simple_filename) and not os.path.isdir(self.simple_filename):
+            print '"%s" exists but is not a directory. %s' % self.simple_filename
+            sys.exit(1)
+        elif not os.path.exists(self.simple_filename):
+            os.makedirs(self.simple_filename)
+        k = map_notes.keys()
+        k.sort()
+        i = 0
+        for created_string_raw in k:
+            for note in map_notes[created_string_raw]:
+                i += 1
                 output_file_path = os.path.join(self.simple_filename, str(i).zfill(4) + '_' + note['created_string_raw'] + '.md')
                 if os.path.exists(output_file_path):
                     print '"%s" file already exists, exiting' % output_file_path
@@ -155,4 +158,4 @@ class EverConverter(object):
                 else:
                     with open(output_file_path, 'w') as output_file:
                         output_file.write(note['content'].encode(encoding='utf-8'))
-                     
+
