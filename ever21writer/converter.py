@@ -11,7 +11,7 @@ class EverConverter(object):
     """Evernote conversion runner
     """
 
-    fieldnames = ['createdate', 'modifydate', 'content', 'tags']
+    fieldnames = ['createdate', 'modifydate', 'content', 'tags','gps']
     date_fmt = '%h %d %Y %H:%M:%S'
 
     def __init__(self, enex_filename, simple_filename=None, fmt='json'):
@@ -60,14 +60,24 @@ class EverConverter(object):
             note_dict['tags'] = tags
             raw_note_attributes = note.xpath('note-attributes')
             source_url = ''
+            gps = "None"
             for note_attribute in raw_note_attributes:
                 if note_attribute.xpath('source-url'):
                     source_url = note_attribute.xpath('source-url')[0].text
+                if note_attribute.xpath('longitude'):
+                    gps = "Lon:"
+                    gps+=str(note_attribute.xpath('longitude')[0].text)
+                if note_attribute.xpath('latitude'):
+                    gps+= " Lat:"
+                    gps+=str(note_attribute.xpath('latitude')[0].text)
+                if note_attribute.xpath('altitude'):
+                    gps+= " Alt:"
+                    gps+=str(note_attribute.xpath('altitude')[0].text)
             note_dict['content'] = ''
             content = note.xpath('content')
             if content:
                 raw_text = content[0].text
-                converted_text = self._convert_html_markdown(title, raw_text, tags, source_url, note_dict['created_string_raw'] )
+                converted_text = self._convert_html_markdown(title, raw_text, tags, gps, source_url, note_dict['created_string_raw'] )
                 if self.fmt == 'csv':
                     # XXX: DictWriter can't handle unicode. Just
                     #      ignoring the problem for now.
@@ -94,7 +104,7 @@ class EverConverter(object):
         if self.fmt == '1writer':
             self._convert_dir(notes)
 
-    def _convert_html_markdown(self, title, text, tags, source_url, created_string_raw ):
+    def _convert_html_markdown(self, title, text, tags, gps, source_url, created_string_raw ):
         html2plain = HTML2Text(None, "")
         html2plain.feed("<h1>%s</h1>" % title)
         if self.fmt == '1writer':
@@ -105,6 +115,9 @@ class EverConverter(object):
                 for i in (tags):
                     html2plain.feed("#%s " % i)
                 html2plain.feed("</p>")
+            if gps:
+                header_created += 1
+                html2plain.feed("<p>GPS: %s</p>" % gps)
             if source_url:
                 html2plain.feed("<p><a href=\"%s\">Source</a></p>" % source_url )
                 header_created += 1

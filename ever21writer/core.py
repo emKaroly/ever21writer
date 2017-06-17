@@ -5,7 +5,7 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(prog=None, description="Convert Evernote.enex files to Markdown", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(prog=None, description="Convert Evernote.enex files to Markdown 1Writer", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('enex-file', help="the path to the Evernote.enex file")
     parser.add_argument('-o', '--output', help="the path to the output file or directory, leave black to output to the terminal (stdout)")
     parser.add_argument('-f', '--format', help="the output format, json, csv or a directory", choices=['json', 'csv', 'dir', '1writer'], default='1writer')
